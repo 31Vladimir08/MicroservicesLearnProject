@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Polly;
 using System;
 
 namespace ECommerce.Api.Gateway
@@ -27,10 +28,12 @@ namespace ECommerce.Api.Gateway
             services.AddControllers();
             services.AddAuthorization();
 
-            services.AddHttpClient("ProductsService", config =>
-            {
-                config.BaseAddress = new Uri(Configuration["Services:Products"]);
-            });
+            services
+                .AddHttpClient("ProductsService", config =>
+                {
+                    config.BaseAddress = new Uri(Configuration["Services:Products"]);
+                })
+                .AddTransientHttpErrorPolicy(x => x.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(5)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
