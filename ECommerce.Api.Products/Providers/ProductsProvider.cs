@@ -55,5 +55,53 @@ namespace ECommerce.Api.Products.Providers
                 return (false, null, e.Message);
             }
         }
+
+        public async Task<(bool IsSuccess, string ErrorMessage)> CreateProductAsync(Product product)
+        {
+            var db = _mapper.Map<ProductEntity>(product);
+            try
+            {
+                _productDbContext.Products.Add(db);
+                await _productDbContext.SaveChangesAsync();
+                return (true, null);
+            }
+            catch (Exception e)
+            {
+                _logger?.LogError(e.ToString());
+                return (false, e.Message);
+            }
+        }
+
+        public async Task<(bool IsSuccess, string ErrorMessage)> EditProductAsync(Product product)
+        {
+            var db = _mapper.Map<ProductEntity>(product);
+            try
+            {
+                _productDbContext.Products.Update(db);
+                await _productDbContext.SaveChangesAsync();
+                return (true, null);
+            }
+            catch (Exception e)
+            {
+                _logger?.LogError(e.ToString());
+                return (false, e.Message);
+            }
+        }
+
+        public async Task<(bool IsSuccess, string ErrorMessage)> DeleteProductAsync(Product product)
+        {
+            var db = _mapper.Map<ProductEntity>(product);
+            try
+            {
+                _productDbContext.Products.Remove(db);
+                await _productDbContext.SaveChangesAsync();
+                return (true, null);
+            }
+            catch (Exception e)
+            {
+                _logger?.LogError(e.ToString());
+                return (false, e.Message);
+            }
+        }
     }
 }

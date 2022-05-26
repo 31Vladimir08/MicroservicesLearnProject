@@ -32,10 +32,11 @@ namespace ECommerce.Api.Products
             {
                 options.UseSqlServer(_options.ConnectionString);
             });
-            services.AddRazorPages();
             services.AddAutoMapper(typeof(ProductProfile));
 
             services.AddScoped<IProductsProvider, ProductsProvider>();
+            services.AddControllers();
+            services.AddAuthorization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +55,7 @@ namespace ECommerce.Api.Products
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -61,7 +63,6 @@ namespace ECommerce.Api.Products
                 endpoints.MapControllerRoute(
                         name: "default",
                         pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
             });
         }
     }

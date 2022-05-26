@@ -1,26 +1,25 @@
-﻿using ECommerce.Api.Products.Interfaces;
-using ECommerce.Api.Products.Models;
+﻿using ECommerce.Api.Gateway.Interfaces;
+using ECommerce.Api.Gateway.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
-namespace ECommerce.Api.Products.Controllers
+namespace ECommerce.Api.Gateway.Controllers
 {
     [ApiController]
     [Route("api/products")]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductsProvider _productsProvider;
+        private readonly IProductsService _productsService;
 
-        public ProductsController(IProductsProvider productsProvider)
+        public ProductsController(IProductsService productsService)
         {
-            _productsProvider = productsProvider;
+            _productsService = productsService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetProductsAsync()
-        {
-            var result = await _productsProvider.GetProductsAsync();
+        {            
+            var result = await _productsService.GetProductsAsync();
             if (result.IsSuccess)
             {
                 return Ok(result.Products);
@@ -32,7 +31,8 @@ namespace ECommerce.Api.Products.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductsAsync(int id)
         {
-            var result = await _productsProvider.GetProductAsync(id);
+            var result = await _productsService.GetProductAsync(id);
+            
             if (result.IsSuccess)
             {
                 return Ok(result.Product);
@@ -48,8 +48,8 @@ namespace ECommerce.Api.Products.Controllers
             {
                 return NotFound();
             }
-            
-            var result = await _productsProvider.CreateProductAsync(product);
+
+            var result = await _productsService.CreateProductAsync(product);
             if (result.IsSuccess)
             {
                 return Ok();
@@ -66,7 +66,7 @@ namespace ECommerce.Api.Products.Controllers
                 return NotFound();
             }
 
-            var result = await _productsProvider.EditProductAsync(product);
+            var result = await _productsService.EditProductAsync(product);
             if (result.IsSuccess)
             {
                 return Ok();
@@ -83,7 +83,7 @@ namespace ECommerce.Api.Products.Controllers
                 return NotFound();
             }
 
-            var result = await _productsProvider.DeleteProductAsync(new Product() { ProductID = id });
+            var result = await _productsService.DeleteProductAsync(new Product() { ProductID = id });
             if (result.IsSuccess)
             {
                 return Ok();

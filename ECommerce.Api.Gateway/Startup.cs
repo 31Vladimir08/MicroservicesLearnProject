@@ -1,12 +1,11 @@
+using ECommerce.Api.Gateway.Interfaces;
+using ECommerce.Api.Gateway.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ECommerce.Api.Gateway
 {
@@ -22,7 +21,16 @@ namespace ECommerce.Api.Gateway
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddScoped<IProductsService, ProductsService>();
+
+            services.AddAuthorization();
+            services.AddControllers();
+            services.AddAuthorization();
+
+            services.AddHttpClient("ProductsService", config =>
+            {
+                config.BaseAddress = new Uri(Configuration["Services:Products"]);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +56,6 @@ namespace ECommerce.Api.Gateway
                 endpoints.MapControllerRoute(
                         name: "default",
                         pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
             });
         }
     }

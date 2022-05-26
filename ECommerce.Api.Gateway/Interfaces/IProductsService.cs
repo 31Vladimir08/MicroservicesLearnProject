@@ -1,10 +1,10 @@
-﻿using ECommerce.Api.Products.Models;
+﻿using ECommerce.Api.Gateway.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ECommerce.Api.Products.Interfaces
+namespace ECommerce.Api.Gateway.Interfaces
 {
-    public interface IProductsProvider
+    public interface IProductsService
     {
         Task<(bool IsSuccess, IEnumerable<Product> Products, string ErrorMessage)> GetProductsAsync();
         Task<(bool IsSuccess, Product Product, string ErrorMessage)> GetProductAsync(int id);
