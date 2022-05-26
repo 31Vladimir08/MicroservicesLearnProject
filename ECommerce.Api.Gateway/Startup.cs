@@ -1,21 +1,17 @@
-using ECommerce.Api.Products.DB;
-using ECommerce.Api.Products.Interfaces;
-using ECommerce.Api.Products.Models;
-using ECommerce.Api.Products.Profiles;
-using ECommerce.Api.Products.Providers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ECommerce.Api.Products
+namespace ECommerce.Api.Gateway
 {
     public class Startup
     {
-        private DbSettings _options;
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,16 +22,7 @@ namespace ECommerce.Api.Products
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            _options = Configuration.GetSection(DbSettings.DbSettingsKey)
-                .Get<DbSettings>();
-            services.AddDbContext<ProductDbContext>(options =>
-            {
-                options.UseSqlServer(_options.ConnectionString);
-            });
             services.AddRazorPages();
-            services.AddAutoMapper(typeof(ProductProfile));
-
-            services.AddScoped<IProductsProvider, ProductsProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
