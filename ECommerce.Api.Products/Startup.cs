@@ -37,6 +37,29 @@ namespace ECommerce.Api.Products
             services.AddScoped<IProductsProvider, ProductsProvider>();
             services.AddControllers();
             services.AddAuthorization();
+
+            // Register the Swagger services
+            services.AddSwaggerDocument(config =>
+            {
+                config.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "ToDo API";
+                    document.Info.Description = "ASP.NET Core web API for Products";
+                    document.Info.TermsOfService = "None";
+                    document.Info.Contact = new NSwag.OpenApiContact
+                    {
+                        Name = "Vladimir Dolidze",
+                        Email = string.Empty,
+                        Url = "https://vk.com/id52435997"
+                    };
+                    document.Info.License = new NSwag.OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = "https://example.com/license"
+                    };
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

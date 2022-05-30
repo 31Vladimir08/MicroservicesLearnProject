@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  ecommerce.api.gateway:
+    image: ${DOCKER_REGISTRY-}ecommerceapigateway
+    build:
+      context: .
+      dockerfile: ECommerce.Api.Gateway/Dockerfile
+
+  ecommerce.api.products:
+    image: ${DOCKER_REGISTRY-}ecommerceapiproducts
+    build:
+      context: .
+      dockerfile: ECommerce.Api.Products/Dockerfile
+

@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  ecommerce.api.gateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Services__Products=http://ecommerce.api.products
+    ports:
+      - "6001:80"
+
+  ecommerce.api.products:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "6002:80"
+
